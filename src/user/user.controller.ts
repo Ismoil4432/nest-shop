@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AddRoleDto } from './dto/add-role.dto';
 import { ActivateUserDto } from './dto/activate-user.dto';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
 @ApiTags('Foydalanuvchilar')
 @Controller('user')
@@ -18,6 +19,7 @@ export class UserController {
   }
 
   @ApiOperation({ summary: "Barcha foydalanuvchilarni olish" })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     return this.userService.findAll();
